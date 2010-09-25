@@ -20,28 +20,28 @@ def intersection(preferences, collection1, collection2):
 			intersect[item] = 1
 	return intersect
 
+def empty(intersection):
+	if len(intersection) == 0:
+		return True
+	return False
+
 
 def sim_distance(preferences,object1, object2):
 	"""Returns a distance-based similarity score for object1 and object2"""
 	
 	shared_items = intersection(preferences, object1, object2)
-
-	number_of_elements = len(shared_items)
-	if number_of_elements == 0: 
+	if empty(shared_items):
 		return 0
 
-	values1 = [preferences[object1][item] for item in shared_items]
-	values2 = [preferences[object2][item] for item in shared_items]
-
-	return 1/(1+euclidean(values1,values2)**2)
+	x = [preferences[object1][item] for item in shared_items]
+	y = [preferences[object2][item] for item in shared_items]
+	return 1/(1+euclidean(x,y)**2)
 
 def sim_pearson(preferences, object1, object2):
 	"""Returns the Pearson correlation coefficient for object1 and object2"""
 
 	shared_items = intersection(preferences, object1, object2)
-
-	number_of_elements = len(shared_items)
-	if number_of_elements == 0:
+	if empty(shared_items):
 		return 0
 
 	x = [preferences[object1][item] for item in shared_items]
@@ -58,3 +58,4 @@ if __name__ == "__main__":
 	recommend = Recommendation()
 	recommend.read(critics)
 	print recommend.similarity(sim_distance, 'Lisa Rose', 'Gene Seymour')
+	print recommend.similarity(sim_pearson, 'Lisa Rose', 'Gene Seymour')
