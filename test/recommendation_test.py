@@ -1,5 +1,6 @@
 from ci.calc.maths import *
 from ci.data.critics import critics
+from ci.ratings import *
 from ci.recommendations import Recommendation
 import unittest
 
@@ -18,5 +19,19 @@ class TestRecommendation(unittest.TestCase):
 	
 	def test_euclidean(self):
 		self.assertEqual(round(self.recommend.similarity(euclidean, 'Lisa Rose', 'Gene Seymour'),8),round(0.148148148148,8))
+
+	def test_type(self):
+		self.assertEqual(type(self.recommend.preferences),type(Ratings()))
+
+	def test_get_rating(self):
+		rating = self.recommend.ratings['Toby']
+		self.assertEqual(type(rating), type(Rating()))
+
+	def test_intersection(self):
+		rating1 = self.recommend.ratings['Toby']
+		rating2 = self.recommend.ratings['Michael Phillips']
+		intersection = rating1 * rating2
+		self.assertEqual(len(intersection),2)
+
 if __name__ == "__main__":
 	unittest.main()

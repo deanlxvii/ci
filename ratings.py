@@ -5,13 +5,16 @@ class Ratings(dict):
 	Collection of ratings
 	dictionair with key and values Rating
 	"""
+	def __init__(self, data=None):
+		if data:
+			self.format(data)
+
 	def format(self, data):
 		if type(data) == type(dict()):
 			for id in data:
 				_rating = Rating()
-				for weight in data[id]:
-					for item in _rating:
-						_rating.rate(item, weight[item])
+				for item in data[id]:
+					_rating.rate(item, data[id][item])
 				self.add(id, _rating)
 
 	def add(self, id, rating):
