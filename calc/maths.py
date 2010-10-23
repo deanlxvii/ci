@@ -57,6 +57,9 @@ def pearson(x,y):
 
     return r
 
+def mean(x):
+	return 1.0*(sum(x)/len(x))
+
 def weightedmean(x,w):
     """
     The weighted mean is a type of average that has a weight for every
@@ -152,3 +155,18 @@ def angle(a,b):
     lb=vector_len(b)
     costheta=dp/(la*lb)
     return acos(costheta)
+
+def least_squares(x,y):
+	mean_x = mean(x)
+	mean_y = mean(y)
+	sxy = []
+	dxq = []
+	for index in range(0,len(x)):
+		dx = x[index]-mean_x
+		dy = y[index]-mean_y
+		sxy += [dx*dy]
+		dxq += [dx*dx]
+
+	b1 = sum(sxy)/sum(dxq)
+	b0 = mean_y - b1*mean_x
+	return (b0, b1)
