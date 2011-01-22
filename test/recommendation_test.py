@@ -33,5 +33,12 @@ class TestRecommendation(unittest.TestCase):
 		intersection = rating1 * rating2
 		self.assertEqual(len(intersection),2)
 
+	def test_top_matches(self):
+		self.assertEqual(len(self.recommend.top_matches('Toby',pearson, n=3)), 3)
+
+	def test_get_recommendations(self):
+		recommendations = self.recommend.get_recommendations('Toby', pearson)
+		self.assertEqual(len(recommendations)>0, True)
+
 if __name__ == "__main__":
 	unittest.main()
