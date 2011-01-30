@@ -1,6 +1,6 @@
 from math import sqrt
 from ci.calc.maths import *
-from ci.ratings import *
+from ci.recommend.ratings import *
 
 class Recommendation(object):
     """
@@ -73,3 +73,15 @@ class Recommendation(object):
         rankings.sort()
         rankings.reverse()
         return rankings
+
+    def reverse(self):
+        """
+	swap the object and items in the preferences
+	"""
+        result = dict()
+        for object in self.preferences:
+            for item in self.preferences[object]:
+                result.setdefault(item,{})
+                # swap item and object
+                result[item][object]=self.preferences[object][item]
+        return result

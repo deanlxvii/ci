@@ -1,7 +1,7 @@
 from ci.calc.maths import *
 from ci.data.critics import critics
-from ci.ratings import *
-from ci.recommendations import Recommendation
+#from ci.ratings import *
+from ci.recommend import Recommendation, Ratings, Rating
 import unittest
 
 class TestRecommendation(unittest.TestCase):
@@ -34,11 +34,36 @@ class TestRecommendation(unittest.TestCase):
 		self.assertEqual(len(intersection),2)
 
 	def test_top_matches(self):
-		self.assertEqual(len(self.recommend.top_matches('Toby',pearson, n=3)), 3)
+		matches = self.recommend.top_matches('Toby', pearson, n=3)
+		self.assertEqual(len(matches), 3)
+		self.assertEqual(matches[0], (0.99124070716192991,'Lisa Rose'))
+		self.assertEqual(matches[1], (0.92447345164190486,'Mick LaSalle'))
+		self.assertEqual(matches[2], (0.89340514744156474,'Claudia Puig'))
 
 	def test_get_recommendations(self):
 		recommendations = self.recommend.get_recommendations('Toby', pearson)
-		self.assertEqual(len(recommendations)>0, True)
+		self.assertEqual(len(recommendations), 3)
+		self.assertEqual(recommendations[0],(3.3477895267131013,'The Night Listener'))
+		self.assertEqual(recommendations[1],(2.8325499182641618,'Lady in the Water'))
+		self.assertEqual(recommendations[2],(2.5309807037655645,'Just My Luck'))
+		
+		recommendations = self.recommend.get_recommendations('Toby', euclidean)
+		self.assertEqual(len(recommendations), 3)
+		self.assertEqual(recommendations[0],(3.5002478401415877,'The Night Listener'))
+		self.assertEqual(recommendations[1],(2.7561242939959363,'Lady in the Water'))
+		self.assertEqual(recommendations[2],(2.461988486074373,'Just My Luck'))
+
+	def test_reverse(self):
+		reversed = self.recommend.reverse()
+		recommendations = Recommendation(reversed)
+		matches = recommendations.top_matches('Superman Returns', pearson)
+		self.assertEqual(len(matches),5)
+		self.assertEqual(matches[0], (0.65795169495976946, 'You, Me and Dupree'))
+		self.assertEqual(matches[1], (0.48795003647426888,'Lady in the Water'))
+		self.assertEqual(matches[2], (0.11180339887498941,'Snakes on a Plane'))
+		self.assertEqual(matches[3], (-0.17984719479905439,'The Night Listener'))
+		self.assertEqual(matches[4], (-0.42289003161103106,'Just My Luck'))
+
 
 if __name__ == "__main__":
 	unittest.main()

@@ -1,5 +1,3 @@
-from ci.data.critics import critics
-
 class Ratings(dict):
 	"""
 	Collection of ratings
@@ -44,31 +42,11 @@ class Rating(dict):
 		self.update({item:value})
 
 	def __mul__(self, rating):
+		"""
+		Use * as intersection symbol
+		"""
 		_intersection = {}
 		for item in self:
 			if item in rating:
 				_intersection[item] = 1
 		return _intersection
-
-if __name__ == "__main__":
-	r = Rating()
-	s = Rating()
-	r.update(critics['Toby'])
-	s.update(critics['Lisa Rose'])
-	print r
-	print r.items
-	print r.weights
-	x = r * s
-	print x
-	print type(r)
-	print type(x)
-	ratings= Ratings()
-	ratings.add('Toby',r)
-	ratings.add('Lisa Rose',s)
-	print ratings
-	print ratings['Toby']
-	c = Ratings()
-	c.format(critics)
-	print len(c)
-
-
