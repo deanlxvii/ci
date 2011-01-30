@@ -1,7 +1,6 @@
 from ci.calc.maths import *
 from ci.data.critics import critics
-#from ci.ratings import *
-from ci.recommend import Recommendation, Ratings, Rating
+from ci.recommend import *
 import unittest
 
 class TestRecommendation(unittest.TestCase):
