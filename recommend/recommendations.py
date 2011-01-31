@@ -76,8 +76,8 @@ class Recommendation(object):
 
     def reverse(self):
         """
-	swap the object and items in the preferences
-	"""
+        swap the object and items in the preferences
+        """
         result = dict()
         for object in self.preferences:
             for item in self.preferences[object]:
@@ -85,3 +85,59 @@ class Recommendation(object):
                 # swap item and object
                 result[item][object]=self.preferences[object][item]
         return result
+
+    def calculate_similar_items(self, n=10):
+        """
+        Create a dictionary of items showing which other items they
+        are most similar to.
+        """
+        result = dict()
+
+        # Invert the preference matrix to be item-centric
+        item_recommend = Recommendation(self.reverse())
+        c = 0
+        for item in item_recommend.preferences:
+            # Status updates for large datasets
+            c+=1
+            if c%100==0: print "%d / %d" (c, len(item_recommend.preferences))
+            # Find the most similar items to this one
+            scores = item_recommend.top_matches(item, n=n, function=euclidean)
+            result[item]=scores
+        return result
+
+    def get_recommended_items(self, item_match, object):
+        user_ratings = dict(self.preferences[object])
+        scores = dict()
+        total_similar = dict()
+
+        # Loop over items rated by this object
+        for (item, rating) in user_ratings.items():
+
+            # Loop over items similar to this one
+            for (similarity, item2) in item_match[item]:
+
+                # Ignore if this user has already rated this item
+                if item2 in user_ratings: continue
+
+                # Weighted sum of rating times similarity
+                scores.setdefault(item2,0)
+                scores[item2] += similarity * rating
+
+                # Sum of all the similarities
+                total_similar.setdefault(item2,0)
+                total_similar[item2] += similarity
+
+        # Divide each total score by total weighting to get an average
+        rankings = [(score/total_similar[item], item) for item, score in scores.items()]
+
+        # Return the rankings from highest to lowest
+        rankings.sort()
+        rankings.reverse()
+        return rankings
+
+if __name__ == "__main__":
+    from ci.data.critics import critics
+    r = Recommendation(critics)
+    item_sim = r.calculate_similar_items()
+    recommendations = r.get_recommended_items(item_sim, 'Toby')
+    print recommendations
