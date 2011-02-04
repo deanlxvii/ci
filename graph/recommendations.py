@@ -1,6 +1,6 @@
 from ci.data.critics import critics
 from pylab import *
-from ci.recommendations import Recommendation as RecommendationData
+from ci.recommend import Recommendation as RecommendationData
 
 class Recommendation(RecommendationData):
 	def __init__(self, data):
