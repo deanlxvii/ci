@@ -63,6 +63,13 @@ class TestRecommendation(unittest.TestCase):
 		self.assertEqual(matches[3], (-0.17984719479905439,'The Night Listener'))
 		self.assertEqual(matches[4], (-0.42289003161103106,'Just My Luck'))
 
+	def test_get_recommended_items(self):
+		similar_items = self.recommend.calculate_similar_items()
+		recommendations = self.recommend.get_recommended_items(similar_items, 'Toby')
+		self.assertEqual(recommendations[0], (3.182634730538922, 'The Night Listener'))
+		self.assertEqual(recommendations[1],(2.5983318700614575, 'Just My Luck'))
+		self.assertEqual(recommendations[2],(2.4730878186968841, 'Lady in the Water'))
+
 
 if __name__ == "__main__":
 	unittest.main()

@@ -134,10 +134,3 @@ class Recommendation(object):
         rankings.sort()
         rankings.reverse()
         return rankings
-
-if __name__ == "__main__":
-    from ci.data.critics import critics
-    r = Recommendation(critics)
-    item_sim = r.calculate_similar_items()
-    recommendations = r.get_recommended_items(item_sim, 'Toby')
-    print recommendations
