@@ -1,11 +1,16 @@
-from pydelicious import get_popular, get_userposts, get_urlposts
-from ci.recommendations import Recommendation as BaseRecommendation
-from ci.calc.maths import *
-import time
 import cPickle
+from pydelicious import get_popular, get_userposts, get_urlposts
+import sys, os, os.path
+from ci.app.delicious.application import Application
+
 
 class Scraper(object):
+	"""
+	Scrape data from del.ico.us
+	Depends on pydelicious!
+	"""
 	def __init__(self, verbose=False):
+		self.app = Application()
 		self.object_dict = dict()
 		self.verbose = verbose
 
@@ -14,12 +19,22 @@ class Scraper(object):
 		return self.object_dict
 
 	def load(self, tag):
+		"""
+		Given the tag it load the dict form a file
+		delicious_[tag].dat
+		"""
 		filename = 'delicious_' + tag + '.dat'
+		filename = os.path.join(self.app.dir['data'], filename)
 		self.object_dict = cPickle.load(open(filename, 'r'))
 		return self.object_dict
 
 	def save(self, tag):
+		"""
+		Saves the scraped data in a .dat file with
+		a prefix delicious_ follow by the tag
+		"""
 		filename ='delicious_'+ tag + '.dat'
+		filename = os.path.join(self.app.dir['data'], filename)
 		cPickle.dump(self.object_dict, open(filename, 'w'))
 
 	def scrape(self,tag, custom_object_names=None):
@@ -77,9 +92,4 @@ class Scraper(object):
 				if self.verbose: print item
 				if item not in ratings:
 					ratings[item] = 0.0
-
-
-class Recommendation(BaseRecommendation):
-	def __init__(self, data):
-		BaseRecommendation.__init__(self, data)
 

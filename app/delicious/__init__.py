@@ -1,2 +1,5 @@
-from delicious import Scraper
-from delicious import Recommendation
+from application import Application
+from scraper import Scraper
+from recommendation import Recommendation
+
+
