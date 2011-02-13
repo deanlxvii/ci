@@ -76,7 +76,7 @@ def tanimoto(a,b):
     """
     The Tanimoto coefficient is a measure of the similarity of two sets.
     """
-    check_dim(a,b)
+    #check_dim(a,b)
 
     c = [v for v in a if v in b]
     return float(len(c))/(len(a)+len(b)-len(c))
