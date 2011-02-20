@@ -49,17 +49,45 @@ class Recommendation(object):
         scores.reverse()
         return scores[0:n]
 
-    def get_recommendations(self, object, function):
-        """
-        Get recommendations for an object by using a weighted average
-        of every object's ranking
-        """
+
+    def get_tanimoto_recommendations(self, object, function):
         totals = {}
         similar_sums = {}
         for other_object in self.preferences:
             if other_object == object: continue
             similar = self.similarity(function, object, other_object)
 
+            if similar <= 0: continue
+            for item in self.preferences[other_object]:
+                if item not in self.preferences[object] or self.preferences[object][item] == []:
+                    totals.setdefault(item,0)
+                    totals[item]+=1
+                    similar_sums.setdefault(item,0)
+                    similar_sums[item]+=similar
+
+        # Create normilized list
+        rankings = [(total/similar_sums[item],item) for item, total in totals.items()]
+        rankings.sort()
+        rankings.reverse()
+        return rankings
+
+
+    def get_recommendations(self, object, function):
+        """
+        Get recommendations for an object by using a weighted average
+        of every object's ranking
+        """
+		
+	if function.__name__ == 'tanimoto':
+            return self.get_tanimoto_recommendations(object, function)
+
+        totals = {}
+        similar_sums = {}
+        for other_object in self.preferences:
+            if other_object == object: continue
+            similar = self.similarity(function, object, other_object)
+
+			# ignore scores equal or lower then zero
             if similar <= 0: continue
             for item in self.preferences[other_object]:
                 if item not in self.preferences[object] or self.preferences[object][item]==0:
