@@ -153,7 +153,6 @@ class DBMS(object):
     # DESCRIPTION
 
     def exists_description(self, record):
-        #sql = """SELECT COUNT(*) FROM descriptions WHERE description="%(description)s" AND url_id=%(url_id)d"""%record
         sql = """SELECT COUNT(*) FROM descriptions WHERE description=? AND url_id=?"""
         return self.exists(sql,record)     
 
@@ -224,6 +223,3 @@ if __name__ == "__main__":
         up = d.get_userposts(user)
         for post in up:
             db.insert(post)
-
-# Error in exists description
-#{'extended': '', 'description': u'Want to know "What is insomina?"', 'tags': u'insomina health questions', 'url': u'http://www.healthysparx.com/questions/2570/what-exactly-is-insomnia/?cid=5rcf01', 'user': u'great.pinku', 'dt': u'2011-02-16T19:01:55Z'}
