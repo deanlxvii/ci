@@ -74,6 +74,8 @@ class DBMS(object):
         self.add_description(record['description'], url_record)
         self.add_user_url_tags(user_record, url_record, tags_records)
         self.add_url_date(record['dt'], url_record, user_record)
+        if record['extended'] <> '':
+            self.add_extended(record['extended'],url_record,user_record)
         
     def exists(self, sql, data=None):
         print '<exists> : ', sql
@@ -165,15 +167,14 @@ class DBMS(object):
     # EXTENDED
 
     def exists_extended(self, record):
-        sql = """SELECT COUNT(*) FROM extendeds WHERE extended=%(extended)s AND url_id=%(url_id)d"""%record
+        sql = """SELECT COUNT(*) FROM extendeds WHERE extended='%(extended)s' AND url_id=%(url_id)d AND user_id=%(user_id)d"""%record
         return self.exists(sql)
 
     def add_extended(self, extended, url_record, user_record):
-        dml = """INSERT INTO extendeds(extended, url_id, user_id) VALUES(%(extended)s, %(url_id)d, %(user_id)d)"""
-        record = {'extended':extended,'url_id':url_record['id'], 'user_id':user_record['id']}
-        dml_string = dml%record
-        if not self.exists_extended(record):
-            self.execute(dml_string, commit=True)
+        dml = """INSERT INTO extendeds(extended, url_id, user_id, created_at, updated_at) VALUES(?, ?, ?, ?, ?)"""
+        record = (extended, url_record['id'], user_record['id'], self.timestamp, self.timestamp)
+        if not self.exists_extended({'extended':extended,'url_id':url_record['id'], 'user_id':user_record['id']}):
+            self.execute(dml, record, commit=True)
 
     # USER URL TAG
 
