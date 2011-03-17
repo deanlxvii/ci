@@ -28,7 +28,7 @@ class Ratings(dict):
 
 class Rating(dict):
     """
-    A dictionair with an item that has a weight
+    A dictionair with  items with weights
     """
     @property
     def items(self):

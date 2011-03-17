@@ -76,8 +76,6 @@ def tanimoto(a,b):
     """
     The Tanimoto coefficient is a measure of the similarity of two sets.
     """
-    #check_dim(a,b)
-
     c = [v for v in a if v in b]
     return float(len(c))/(len(a)+len(b)-len(c))
 
@@ -157,16 +155,17 @@ def angle(a,b):
     return acos(costheta)
 
 def least_squares(x,y):
-	mean_x = mean(x)
-	mean_y = mean(y)
-	sxy = []
-	dxq = []
-	for index in range(0,len(x)):
-		dx = x[index]-mean_x
-		dy = y[index]-mean_y
-		sxy += [dx*dy]
-		dxq += [dx*dx]
+    mean_x = mean(x)
+    mean_y = mean(y)
+    sxy = []
+    dxq = []
+    for index in range(0,len(x)):
+        dx = x[index]-mean_x
+        dy = y[index]-mean_y
+        sxy += [dx*dy]
+        dxq += [dx*dx]
 
-	b1 = sum(sxy)/sum(dxq)
-	b0 = mean_y - b1*mean_x
-	return (b0, b1)
+    b1 = sum(sxy)/sum(dxq)
+    b0 = mean_y - b1*mean_x
+    return (b0, b1)
+

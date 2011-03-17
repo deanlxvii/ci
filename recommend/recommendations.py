@@ -77,8 +77,8 @@ class Recommendation(object):
         Get recommendations for an object by using a weighted average
         of every object's ranking
         """
-		
-	if function.__name__ == 'tanimoto':
+        
+        if function.__name__ == 'tanimoto':
             return self.get_tanimoto_recommendations(object, function)
 
         totals = {}
@@ -87,7 +87,7 @@ class Recommendation(object):
             if other_object == object: continue
             similar = self.similarity(function, object, other_object)
 
-			# ignore scores equal or lower then zero
+            # ignore scores equal or lower then zero
             if similar <= 0: continue
             for item in self.preferences[other_object]:
                 if item not in self.preferences[object] or self.preferences[object][item]==0:
