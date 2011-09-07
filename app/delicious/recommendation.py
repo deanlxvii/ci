@@ -1,4 +1,4 @@
-from ci.recommend import Recommendation as BaseRecommendation
+from ci.lib.recommend import Recommendation as BaseRecommendation
 
 class Recommendation(BaseRecommendation):
 	def __init__(self, data):

@@ -1,5 +1,5 @@
-from ci.data.critics import critics
-from ci.recommend import *
+from ci.dat.critics import critics
+from ci.lib.recommend import *
 import unittest
 
 class TestRatings(unittest.TestCase):

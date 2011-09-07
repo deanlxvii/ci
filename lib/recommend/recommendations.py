@@ -1,6 +1,6 @@
 from math import sqrt
-from ci.calc.maths import *
-from ci.recommend.ratings import *
+from ci.lib.calc.maths import *
+from ci.lib.recommend.ratings import *
 
 class Recommendation(object):
     """

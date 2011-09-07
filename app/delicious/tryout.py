@@ -1,5 +1,5 @@
 from ci.app.delicious.scraper import TagItem
-from ci.calc.maths import *
+from ci.lib.calc.maths import *
 from ci.app.delicious.recommendation import Recommendation
 
 
